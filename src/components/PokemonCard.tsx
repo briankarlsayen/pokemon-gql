@@ -1,6 +1,5 @@
-import React from 'react';
 import TypeBadge from './TypeBadge';
-
+import Image from './Image';
 interface ITypes {
   __typename: 'string';
   name: 'string';
@@ -27,7 +26,7 @@ export default function PokemonCard({
       onClick={() => onClick(name)}
     >
       <div className='flex h-full w-full flex-1 items-center justify-center'>
-        <img src={image} alt={name} />
+        <Image name={name} src={image} />
       </div>
       <div className='basis-1/3 text-center'>
         <h4 className='capitalize'>{name}</h4>

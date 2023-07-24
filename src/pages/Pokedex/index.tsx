@@ -4,7 +4,9 @@ import { useQuery, gql } from '@apollo/client';
 import PokemonCard from '../../components/PokemonCard';
 import { GET_ALL_POKEMONS } from '../../api/query';
 import PokemonDetails from '../../components/PokemonDetails';
-
+import Loading from '../../components/Loading';
+import { FaCaretRight, FaCaretLeft } from 'react-icons/fa';
+import Input from '../../components/Input';
 const GET_POKEMON_DETAILS = gql`
   {
     getPokemon(pokemon: dragoni) {
@@ -16,21 +18,44 @@ const GET_POKEMON_DETAILS = gql`
   }
 `;
 
+const OFFSET = 89;
+const DEFAULT_PAGE = 1;
+const ITEM_PER_PAGE = 8;
+
 export default function Pokedex() {
   const [keyword, setKeyword] = useState();
   const [select, setSelected] = useState('');
-  const handlePick = (val: string) => {
-    console.log('val', val);
-    // alert(keyword);
-  };
+  const [startNum, setStartNum] = useState('');
+  const [page, setPage] = useState(DEFAULT_PAGE);
 
-  const { loading, error, data } = useQuery(GET_ALL_POKEMONS);
-  console.log('data', data);
+  const { loading, error, data, refetch } = useQuery(GET_ALL_POKEMONS, {
+    variables: { num: OFFSET },
+  });
 
   const pokemons = data?.getAllPokemon;
   const handleClick = (e: string) => {
-    setSelected(e);
-    console.log('e', e);
+    const lowerCased = e.toLowerCase();
+    setSelected(lowerCased);
+    console.log('e', lowerCased);
+  };
+
+  console.log('startNum', startNum);
+  const handleGetPokemonsByNum = (e: any) => {
+    e.preventDefault();
+    console.log('get pokemons');
+    refetch({ num: OFFSET + (page + 1) * ITEM_PER_PAGE });
+    setPage((prevCount) => prevCount + 1);
+  };
+
+  const handleNext = () => {
+    refetch({ num: OFFSET + page * ITEM_PER_PAGE });
+    setPage((prevCount) => prevCount + 1);
+  };
+  const handleBack = () => {
+    if (page > 0) {
+      refetch({ num: OFFSET + (page - 1) * ITEM_PER_PAGE });
+      setPage((prevCount) => prevCount - 1);
+    }
   };
 
   return (
@@ -44,11 +69,39 @@ export default function Pokedex() {
               console.log('e', e);
               setKeyword(e);
             }}
-            onSubmit={handlePick}
+            onSubmit={handleClick}
             className='max-w-xl w-full items-center justify-center'
           />
         </div>
-        <div className='grid grid-cols-4 pt-12 gap-4'>
+        <form onSubmit={handleGetPokemonsByNum}>
+          <Input
+            value={startNum}
+            onChange={(e: any) => {
+              console.log('e', e);
+              setStartNum(e);
+            }}
+          />
+        </form>
+        <div
+          id='pokemon-list-pagination'
+          className='flex w-full justify-between'
+        >
+          <span
+            className='border p-2 rounded-md items-center flex cursor-pointer'
+            onClick={handleBack}
+          >
+            <FaCaretLeft />
+            Back
+          </span>
+          <span
+            className='border p-2 rounded-md items-center flex cursor-pointer'
+            onClick={handleNext}
+          >
+            Next
+            <FaCaretRight />
+          </span>
+        </div>
+        <div className='grid grid-cols-4 pt-12 gap-4 relative items-center min-h-[82vh]'>
           {pokemons ? (
             pokemons.map((pokemon: any) => (
               <PokemonCard
@@ -63,7 +116,7 @@ export default function Pokedex() {
               />
             ))
           ) : (
-            <></>
+            <Loading loading={true} />
           )}
         </div>
       </div>

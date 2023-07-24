@@ -41,8 +41,7 @@ export default function SearchBar({
   const visibility = open ? 'opacity-100' : 'opacity-0';
 
   return (
-    <form className={`relative mt-1 ${className}`}>
-      <div></div>
+    <div className={`relative mt-1 ${className}`}>
       <input
         type='text'
         id='password'
@@ -59,7 +58,7 @@ export default function SearchBar({
       />
       {!!filteredOpts?.length && open && (
         <ul
-          className={`border border-gray-300 rounded-lg p-2 mt-2 transition delay-50 duration-100 ease-linear absolute w-full bg-red-800`}
+          className={`border border-gray-300 rounded-lg p-2 mt-2 transition delay-50 duration-100 ease-linear absolute w-full bg-gray-100`}
         >
           {filteredOpts.map((val) => {
             return (
@@ -80,6 +79,6 @@ export default function SearchBar({
       >
         <FaSearch />
       </button>
-    </form>
+    </div>
   );
 }

@@ -4,7 +4,7 @@ interface IPokeType {
   textColor: string;
 }
 
-const defaultTextColor = '#2D2D2D'
+const defaultTextColor = '#fff';
 
 const pokeTypes: IPokeType[] = [
   {

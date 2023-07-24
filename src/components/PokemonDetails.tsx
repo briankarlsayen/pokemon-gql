@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
 import TypeBadge from './TypeBadge';
 import AbilitiesBadge from './AbilitiesBadge';
 import { useQuery } from '@apollo/client';
 import { GET_POKEMON } from '../api/query';
+import Image from './Image';
+import Loading from './Loading';
 
 interface IInfoCard {
   title: string;
@@ -58,92 +59,88 @@ export default function PokemonDetails({ selected }: any) {
   console.log('selected', selected);
 
   return (
-    <div>
-      <div className='flex flex-col justify-center'>
-        <div className='flex justify-center items-center max-w-[300px] max-h-[300px] w-full h-full self-center'>
-          <div className='flex h-full w-full flex-1 items-center justify-center'>
-            <img
-              src={pokemon?.sprite}
-              // src='https://assets.pokemon.com/assets/cms2/img/pokedex/full/395.png'
-              alt='pokemon-img'
-            />
+    <div className='relative'>
+      <div>
+        <div className='flex flex-col justify-center'>
+          <div className='flex justify-center items-center max-w-[300px] max-h-[300px] w-full h-full self-center'>
+            <div className='flex h-full w-full flex-1 items-center justify-center'>
+              <Image name={pokemon.key} src={pokemon?.sprite} />
+            </div>
+          </div>
+          <p className='pt-4'>#{pokemon.num}</p>
+          <h3 className='capitalize'>{pokemon.key}</h3>
+          <div className='flex justify-center w-full items-center gap-2'>
+            {pokemon?.types?.map((type: any) => (
+              <TypeBadge key={type.name} name={type.name} />
+            ))}
           </div>
         </div>
-        <p className='pt-4'>#{pokemon.num}</p>
-        <h3 className='capitalize'>{pokemon.key}</h3>
-        <div className='flex justify-center w-full items-center gap-2'>
-          {pokemon?.types?.map((type: any) => (
-            <TypeBadge name={type.name} />
-          ))}
+        <div className='pt-4'>
+          <label>Pokedex Entry</label>
+          <p>{pokemon.flavorTexts[0].flavor}</p>
+        </div>
+        <div className='pt-4'>
+          <label>Abilities</label>
+          <div className='flex justify-center w-full items-center gap-2'>
+            <AbilitiesBadge name={pokemon.abilities?.first?.name} />
+            {/* <AbilitiesBadge name={pokemon.abilities?.second ? pokemon.abilities?.second?.name : 'null'} /> */}
+          </div>
+        </div>
+        <div className='grid grid-cols-2 gap-2 pt-4'>
+          <InfoCard title='Height' content={pokemon?.height} />
+          <InfoCard title='Weight' content={pokemon?.weight} />
+          <InfoCard title='Evolution lvl' content={pokemon?.evolutionLevel} />
+        </div>
+        <div className='pt-4'>
+          <label>Stats</label>
+          <hr />
+          <ul className='grid grid-cols-2'>
+            <li>
+              <p>
+                Hp-
+                <span>{pokemon.baseStats.hp}</span>
+              </p>
+            </li>
+            <li>
+              <p>
+                Atk-
+                <span>{pokemon.baseStats.attack}</span>
+              </p>
+            </li>
+            <li>
+              <p>
+                Def-
+                <span>{pokemon.baseStats.defense}</span>
+              </p>
+            </li>
+            <li>
+              <p>
+                SpA-
+                <span>{pokemon.baseStats.specialattack}</span>
+              </p>
+            </li>
+            <li>
+              <p>
+                SpD-
+                <span>{pokemon.baseStats.specialdefense}</span>
+              </p>
+            </li>
+            <li>
+              <p>
+                SPD-
+                <span>{pokemon.baseStats.speed}</span>
+              </p>
+            </li>
+            <li>
+              <p>
+                Tot-
+                <span>{pokemon.baseStatsTotal}</span>
+              </p>
+            </li>
+          </ul>
         </div>
       </div>
-      <div className='pt-4'>
-        <label>Pokedex Entry</label>
-        <p>{pokemon.flavorTexts[0].flavor}</p>
-      </div>
-      <div className='pt-4'>
-        <label>Abilities</label>
-        <div className='flex justify-center w-full items-center gap-2'>
-          <AbilitiesBadge name={pokemon.abilities?.first?.name} />
-          {/* <AbilitiesBadge name={pokemon.abilities?.second ? pokemon.abilities?.second?.name : 'null'} /> */}
-        </div>
-      </div>
-      <div className='grid grid-cols-2 gap-2 pt-4'>
-        <InfoCard title='Height' content={pokemon?.height} />
-        <InfoCard title='Weight' content={pokemon?.weight} />
-        <InfoCard title='Evolution lvl' content={pokemon?.evolutionLevel} />
-        {/* {pokemon?.evolutionLevel && (
-          <InfoCard title='Evolution lvl' content={pokemon.evolutionLevel} />
-        )} */}
-      </div>
-      <div className='pt-4'>
-        <label>Stats</label>
-        <hr />
-        <ul className='grid grid-cols-2'>
-          <li>
-            <p>
-              Hp-
-              <span>{pokemon.baseStats.hp}</span>
-            </p>
-          </li>
-          <li>
-            <p>
-              Atk-
-              <span>{pokemon.baseStats.attack}</span>
-            </p>
-          </li>
-          <li>
-            <p>
-              Def-
-              <span>{pokemon.baseStats.defense}</span>
-            </p>
-          </li>
-          <li>
-            <p>
-              SpA-
-              <span>{pokemon.baseStats.specialattack}</span>
-            </p>
-          </li>
-          <li>
-            <p>
-              SpD-
-              <span>{pokemon.baseStats.specialdefense}</span>
-            </p>
-          </li>
-          <li>
-            <p>
-              SPD-
-              <span>{pokemon.baseStats.speed}</span>
-            </p>
-          </li>
-          <li>
-            <p>
-              Tot-
-              <span>{pokemon.baseStatsTotal}</span>
-            </p>
-          </li>
-        </ul>
-      </div>
+      <Loading loading={loading} />
     </div>
   );
 }
