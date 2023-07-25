@@ -52,3 +52,42 @@ export const GET_POKEMON = gql`
     }
   }
 `;
+export const GET_POKEMON_BY_NUM = gql`
+  query GetPokemonByDexNumber($number: Int!) {
+    getPokemonByDexNumber(number: $number) {
+      gender {
+        female
+        male
+      }
+      height
+      sprite
+      types {
+        name
+      }
+      num
+      key
+      weight
+      abilities {
+        first {
+          name
+        }
+        second {
+          name
+        }
+      }
+      flavorTexts {
+        flavor
+      }
+      baseStats {
+        attack
+        defense
+        hp
+        specialattack
+        specialdefense
+        speed
+      }
+      baseStatsTotal
+      evolutionLevel
+    }
+  }
+`;
