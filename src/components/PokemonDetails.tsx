@@ -1,7 +1,7 @@
 import TypeBadge from './TypeBadge';
 import AbilitiesBadge from './AbilitiesBadge';
 import { useQuery } from '@apollo/client';
-import { GET_POKEMON } from '../api/query';
+import { GET_POKEMON, GET_POKEMON_BY_NUM } from '../api/query';
 import Image from './Image';
 import Loading from './Loading';
 
@@ -51,11 +51,35 @@ export default function PokemonDetails({ selected }: any) {
     evolutionLevel: '36',
   };
 
-  const { loading, error, data } = useQuery(GET_POKEMON, {
-    variables: { pokemon: selected ?? 'pikachu' },
-  });
-  const pokemon = data?.getPokemon ?? defaultData;
-  console.log('data', data?.getPokemon);
+  // const { loading, error, data } = useQuery(GET_POKEMON_BY_NUM, {
+  //   variables: { number: 1 },
+  // });
+
+  const type = 'name'; // name | num
+  let pokemon = defaultData;
+  let loading, error, data;
+
+  if (type === 'name') {
+    const getByName =
+      useQuery(GET_POKEMON, {
+        variables: { pokemon: selected ?? 'pikachu' },
+      }) ?? {};
+    pokemon = getByName?.data?.getPokemon ?? defaultData;
+    loading = getByName?.loading;
+  } else {
+    const getByNum =
+      useQuery(GET_POKEMON_BY_NUM, {
+        variables: { number: 1 },
+      }) ?? {};
+    pokemon = getByNum?.data?.getPokemonByDexNumber ?? defaultData;
+    loading = getByNum?.loading;
+  }
+
+  // const { loading, error, data } = useQuery(GET_POKEMON, {
+  //   variables: { pokemon: selected ?? 'pikachu' },
+  // });
+  // let pokemon = data?.getPokemonByDexNumber ?? defaultData;
+  // console.log('data', data?.getPokemon);
   console.log('selected', selected);
 
   return (

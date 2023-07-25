@@ -19,13 +19,13 @@ const GET_POKEMON_DETAILS = gql`
 `;
 
 const OFFSET = 89;
-const DEFAULT_PAGE = 1;
+const DEFAULT_PAGE = 0;
 const ITEM_PER_PAGE = 8;
 
 export default function Pokedex() {
   const [keyword, setKeyword] = useState();
   const [select, setSelected] = useState('');
-  const [startNum, setStartNum] = useState('');
+  const [startNum, setStartNum] = useState<number | null>(null);
   const [page, setPage] = useState(DEFAULT_PAGE);
 
   const { loading, error, data, refetch } = useQuery(GET_ALL_POKEMONS, {
@@ -39,16 +39,14 @@ export default function Pokedex() {
     console.log('e', lowerCased);
   };
 
-  console.log('startNum', startNum);
   const handleGetPokemonsByNum = (e: any) => {
     e.preventDefault();
-    console.log('get pokemons');
-    refetch({ num: OFFSET + (page + 1) * ITEM_PER_PAGE });
-    setPage((prevCount) => prevCount + 1);
+    // refetch({ num: OFFSET + Number(startNum ?? 0) });
+    setPage(0);
   };
 
   const handleNext = () => {
-    refetch({ num: OFFSET + page * ITEM_PER_PAGE });
+    refetch({ num: OFFSET + (page + 1) * ITEM_PER_PAGE });
     setPage((prevCount) => prevCount + 1);
   };
   const handleBack = () => {
@@ -73,21 +71,26 @@ export default function Pokedex() {
             className='max-w-xl w-full items-center justify-center'
           />
         </div>
-        <form onSubmit={handleGetPokemonsByNum}>
+        <form
+          className='max-w-[9rem] float-right pt-4 flex items-center gap-2'
+          onSubmit={handleGetPokemonsByNum}
+        >
+          <label>from</label>
           <Input
             value={startNum}
             onChange={(e: any) => {
               console.log('e', e);
               setStartNum(e);
             }}
+            type='number'
           />
         </form>
         <div
           id='pokemon-list-pagination'
-          className='flex w-full justify-between'
+          className='flex w-full justify-between pt-4'
         >
           <span
-            className='border p-2 rounded-md items-center flex cursor-pointer'
+            className='border p-2 rounded-md items-center flex cursor-pointer hover:bg-slate-100'
             onClick={handleBack}
           >
             <FaCaretLeft />

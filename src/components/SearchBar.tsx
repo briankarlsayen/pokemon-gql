@@ -58,13 +58,13 @@ export default function SearchBar({
       />
       {!!filteredOpts?.length && open && (
         <ul
-          className={`border border-gray-300 rounded-lg p-2 mt-2 transition delay-50 duration-100 ease-linear absolute w-full bg-gray-100`}
+          className={`border border-gray-300 rounded-lg p-2 mt-2 absolute w-full z-10 bg-white`}
         >
           {filteredOpts.map((val) => {
             return (
               <li
                 key={val}
-                className=' m-0 p-2 cursor-pointer hover:bg-gray-200'
+                className=' m-0 p-2 cursor-pointer hover:bg-gray-200 z-10'
                 onMouseDown={() => handleSelect(val)}
               >
                 {val}
