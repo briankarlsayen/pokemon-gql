@@ -8,6 +8,10 @@
 @tailwind components;
 @tailwind utilities;
 
+p {
+  @apply md:text-base text-sm;
+}
+
 h2 {
   @apply font-bold text-2xl;
 }
@@ -21,7 +25,7 @@ h4 {
 }
 
 li {
-  @apply pt-4 flex justify-between;
+  @apply md:text-base text-sm pt-4 flex justify-between;
 }
 
 label {

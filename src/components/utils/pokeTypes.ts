@@ -14,7 +14,7 @@ const pokeTypes: IPokeType[] = [
   },
   {
     name: 'steel',
-    color: 'gray',
+    color: '#B8B8D0',
     textColor: defaultTextColor,
   },
   {
@@ -54,12 +54,7 @@ const pokeTypes: IPokeType[] = [
   },
   {
     name: 'dark',
-    color: '#FFFFFF',
-    textColor: defaultTextColor,
-  },
-  {
-    name: 'dark',
-    color: '#8B6D5B',
+    color: '#715849',
     textColor: defaultTextColor,
   },
   {
@@ -75,6 +70,31 @@ const pokeTypes: IPokeType[] = [
   {
     name: 'ground',
     color: '#E2C469',
+    textColor: defaultTextColor,
+  },
+  {
+    name: 'fighting',
+    color: '#C13029',
+    textColor: defaultTextColor,
+  },
+  {
+    name: 'ghost',
+    color: '#715899',
+    textColor: defaultTextColor,
+  },
+  {
+    name: 'ice',
+    color: '#99D9D8',
+    textColor: defaultTextColor,
+  },
+  {
+    name: 'rock',
+    color: '#B8A139',
+    textColor: defaultTextColor,
+  },
+  {
+    name: 'fairy',
+    color: '#EF98AC',
     textColor: defaultTextColor,
   },
 ];

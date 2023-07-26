@@ -5,13 +5,63 @@ import { GET_POKEMON, GET_POKEMON_BY_NUM } from '../api/query';
 import Image from './Image';
 import Loading from './Loading';
 
+interface IGender {
+  female: string;
+  male: string;
+}
+
+interface IType {
+  name: string;
+}
+
+interface IAbility {
+  name: string;
+  shortDesc: string;
+}
+
+interface IAbilities {
+  first: IAbility;
+  second: IAbility | null;
+  hidden: IAbility | null;
+  special: IAbility | null;
+}
+
+interface IFlavorText {
+  game: string;
+  flavor: string;
+}
+
+interface IBaseStats {
+  attack: number;
+  defense: number;
+  hp: number;
+  specialattack: number;
+  specialdefense: number;
+  speed: number;
+}
+
+interface IPokemon {
+  gender: IGender;
+  height: number;
+  sprite: string;
+  types: IType[];
+  num: number;
+  key: string;
+  weight: number;
+  abilities: IAbilities;
+  flavorTexts: IFlavorText[];
+  baseStats: IBaseStats;
+  baseStatsTotal: number;
+  evolutionLevel: string;
+}
+
 interface IInfoCard {
   title: string;
   content: number | string;
 }
 
 export default function PokemonDetails({ selected }: any) {
-  const defaultData = {
+  const defaultData: IPokemon = {
     gender: {
       female: '50%',
       male: '50%',
@@ -29,8 +79,11 @@ export default function PokemonDetails({ selected }: any) {
     abilities: {
       first: {
         name: 'Static',
+        shortDesc: 'Pokemon',
       },
       second: null,
+      hidden: null,
+      special: null,
     },
     flavorTexts: [
       {
@@ -101,12 +154,35 @@ export default function PokemonDetails({ selected }: any) {
         </div>
         <div className='pt-4'>
           <label>Pokedex Entry</label>
-          <p>{pokemon.flavorTexts[0].flavor}</p>
+          <p>{pokemon?.flavorTexts[0]?.flavor}</p>
         </div>
         <div className='pt-4'>
           <label>Abilities</label>
           <div className='flex justify-center w-full items-center gap-2'>
-            <AbilitiesBadge name={pokemon.abilities?.first?.name} />
+            <AbilitiesBadge
+              name={pokemon.abilities?.first?.name}
+              description={pokemon.abilities?.first?.shortDesc}
+            />
+            {pokemon.abilities?.second && (
+              <AbilitiesBadge
+                name={pokemon.abilities?.second.name}
+                description={pokemon.abilities?.second?.shortDesc}
+              />
+            )}
+            {pokemon.abilities?.hidden && (
+              <AbilitiesBadge
+                name={pokemon.abilities?.hidden.name}
+                description={pokemon.abilities?.hidden?.shortDesc}
+                type='Hidden'
+              />
+            )}
+            {pokemon.abilities?.special && (
+              <AbilitiesBadge
+                name={pokemon.abilities?.special.name}
+                description={pokemon.abilities?.special?.shortDesc}
+                type='Special'
+              />
+            )}
             {/* <AbilitiesBadge name={pokemon.abilities?.second ? pokemon.abilities?.second?.name : 'null'} /> */}
           </div>
         </div>

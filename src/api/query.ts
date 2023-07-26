@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const GET_ALL_POKEMONS = gql`
-  query GetAllPokemon($num: Int) {
-    getAllPokemon(offset: $num, take: 8) {
+  query GetAllPokemon($num: Int, $reverse: Boolean) {
+    getAllPokemon(offset: $num, reverse: $reverse, take: 8) {
       key
       num
       types {
@@ -31,9 +31,19 @@ export const GET_POKEMON = gql`
       abilities {
         first {
           name
+          shortDesc
         }
         second {
           name
+          shortDesc
+        }
+        hidden {
+          name
+          shortDesc
+        }
+        special {
+          name
+          shortDesc
         }
       }
       flavorTexts {
