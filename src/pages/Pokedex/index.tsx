@@ -8,6 +8,7 @@ import Loading from '../../components/Loading';
 import { FaCaretRight, FaCaretLeft, FaSun, FaMoon } from 'react-icons/fa';
 import Select from '../../components/Select';
 import PokeballLogo from '../../assets/pokeball-v1.png';
+import CustomSelect from '../../components/CustomSelect';
 const DEFAULT_OFFSET = 89;
 const DEFAULT_PAGE = 0;
 const ITEM_PER_PAGE = 8;
@@ -94,7 +95,8 @@ export default function Pokedex() {
             />
           </div>
           <div className='pt-4'>
-            <Select onChange={handleChangeOrder} options={options} />
+            <CustomSelect options={options} />
+            {/* <Select onChange={handleChangeOrder} options={options} /> */}
           </div>
           <div
             id='pokemon-list-pagination'

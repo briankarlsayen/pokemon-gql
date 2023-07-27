@@ -36,6 +36,10 @@ label {
   @apply uppercase font-semibold;
 }
 
+option {
+  @apply my-4 py-2 h-10 bg-red-400;
+}
+
 [data-theme='light'] .card-container {
   @apply bg-white hover:bg-slate-50;
 }

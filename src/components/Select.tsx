@@ -9,7 +9,7 @@ interface ISelect {
   rest?: any;
 }
 
-export default function Select({ onChange, options }: ISelect) {
+export default function Select({ onChange, options, ...rest }: ISelect) {
   return (
     <select
       className='select w-fit max-w-xs'
