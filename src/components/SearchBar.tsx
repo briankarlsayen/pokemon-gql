@@ -2,18 +2,12 @@ import { FaSearch } from 'react-icons/fa';
 import { PokemonEnum } from '@favware/graphql-pokemon';
 import { useState } from 'react';
 
-export default function SearchBar({
-  value,
-  onChange,
-  onSubmit,
-  className,
-  ...rest
-}: any) {
+export default function SearchBar({ onSubmit, className }: any) {
   function getEnumKeys<T extends object>(enumObj: T): Array<keyof T> {
     return Object.keys(enumObj) as Array<keyof T>;
   }
 
-  const [options, setOptions] = useState(getEnumKeys(PokemonEnum));
+  const [options] = useState(getEnumKeys(PokemonEnum));
   const [filteredOpts, setFilteredOpts] = useState(
     getEnumKeys(PokemonEnum).slice(0, 10)
   );
@@ -37,8 +31,6 @@ export default function SearchBar({
   const handleSelect = (val: string) => {
     return onSubmit(val);
   };
-
-  const visibility = open ? 'opacity-100' : 'opacity-0';
 
   return (
     <div className={`relative mt-1 ${className}`}>

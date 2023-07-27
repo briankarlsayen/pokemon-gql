@@ -21,15 +21,12 @@ export default function Pokedex() {
   const [fetching, setFetching] = useState(false);
   const [isNext, setIsNext] = useState(true);
 
-  const { loading, error, data, refetch, networkStatus } = useQuery(
-    GET_ALL_POKEMONS,
-    {
-      variables: {
-        num: offset ?? DEFAULT_OFFSET,
-        reverse: order === 'ascending' ? false : true,
-      },
-    }
-  );
+  const { loading, data, refetch } = useQuery(GET_ALL_POKEMONS, {
+    variables: {
+      num: offset ?? DEFAULT_OFFSET,
+      reverse: order === 'ascending' ? false : true,
+    },
+  });
 
   const refetchCallback = () => {
     setFetching(true);
@@ -46,12 +43,6 @@ export default function Pokedex() {
   const handleClick = (e: string) => {
     const lowerCased = e.toLowerCase();
     setSelected(lowerCased);
-  };
-
-  const handleGetPokemonsByNum = (e: any) => {
-    e.preventDefault();
-    // refetch({ num: DEFAULT_OFFSET + Number(startNum ?? 0) });
-    setPage(0);
   };
 
   const handleNext = () => {
@@ -105,20 +96,6 @@ export default function Pokedex() {
           <div className='pt-4'>
             <Select onChange={handleChangeOrder} options={options} />
           </div>
-          {/* <form
-          className='max-w-[9rem] float-right pt-4 flex items-center gap-2'
-          onSubmit={handleGetPokemonsByNum}
-        >
-          <label>from</label>
-          <Input
-            value={startNum}
-            onChange={(e: any) => {
-              console.log('e', e);
-              setStartNum(e);
-            }}
-            type='number'
-          />
-        </form> */}
           <div
             id='pokemon-list-pagination'
             className='flex w-full justify-between pt-4'

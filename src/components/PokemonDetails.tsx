@@ -105,13 +105,9 @@ export default function PokemonDetails({ selected }: any) {
     evolutionLevel: '36',
   };
 
-  // const { loading, error, data } = useQuery(GET_POKEMON_BY_NUM, {
-  //   variables: { number: 1 },
-  // });
-
   const type = 'name'; // name | num
-  let pokemon = defaultData;
-  let loading, error, data;
+  let pokemon;
+  let loading;
 
   if (type === 'name') {
     const getByName =
@@ -128,13 +124,6 @@ export default function PokemonDetails({ selected }: any) {
     pokemon = getByNum?.data?.getPokemonByDexNumber ?? defaultData;
     loading = getByNum?.loading;
   }
-
-  // const { loading, error, data } = useQuery(GET_POKEMON, {
-  //   variables: { pokemon: selected ?? 'pikachu' },
-  // });
-  // let pokemon = data?.getPokemonByDexNumber ?? defaultData;
-  // console.log('data', data?.getPokemon);
-  console.log('selected', selected);
 
   return (
     <div className='relative pokemon-details-container p-4 rounded-md shadow-md h-auto'>

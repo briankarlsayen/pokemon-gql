@@ -1,4 +1,3 @@
-import LoadingImg from '../assets/loading.gif';
 import PokeballImg from '../assets/pokeball3.png';
 
 interface ILoading {

@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface IOption {
   name: string;
   value: string;
@@ -11,7 +9,7 @@ interface ISelect {
   rest?: any;
 }
 
-export default function Select({ onChange, options, ...rest }: ISelect) {
+export default function Select({ onChange, options }: ISelect) {
   return (
     <select
       className='select w-fit max-w-xs'
