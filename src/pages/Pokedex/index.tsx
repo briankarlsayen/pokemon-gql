@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SearchBar from '../../components/SearchBar';
 import { useQuery } from '@apollo/client';
 import PokemonCard from '../../components/PokemonCard';
@@ -68,12 +68,11 @@ export default function Pokedex() {
   ];
 
   return (
-    <div className='flex gap-4 min-h-screen h-full justify-center'>
+    <div className='flex gap-4 min-h-screen h-full justify-center flex-col items-center'>
       <Header />
       <div className='flex w-full gap-4 max-w-7xl'>
-        <div id='pokemon-list' className='basis-2/3'>
-          {/* <h2 className='pb-20'>Pokemon</h2> */}
-          <div className='flex justify-center w-full pt-20'>
+        <div id='pokemon-list' className='basis-2/3 flex flex-col'>
+          <div className='flex justify-center w-full pt-12'>
             <SearchBar
               value={keyword}
               onChange={(e: any) => {
@@ -105,22 +104,22 @@ export default function Pokedex() {
             id='pokemon-list-pagination'
             className='flex w-full justify-between pt-4'
           >
-            <span
-              className='border p-2 rounded-md items-center flex cursor-pointer hover:bg-slate-100'
+            <button
+              className='btn flex items-center p-2 rounded-md '
               onClick={handleBack}
             >
               <FaCaretLeft />
               Back
-            </span>
-            <span
-              className='border p-2 rounded-md items-center flex cursor-pointer'
+            </button>
+            <button
+              className='btn flex items-center p-2 rounded-md '
               onClick={handleNext}
             >
               Next
               <FaCaretRight />
-            </span>
+            </button>
           </div>
-          <div className='grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 pt-12 gap-4 relative items-center min-h-[70vh]'>
+          <div className='grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 pt-12 gap-4 relative items-center flex-1 min-h-[35rem]'>
             {pokemons ? (
               pokemons.map((pokemon: any) => (
                 <PokemonCard
@@ -139,10 +138,7 @@ export default function Pokedex() {
             )}
           </div>
         </div>
-        <div
-          id='pokemon-details'
-          className='basis-1/3 shadow-lg rounded-md p-4 mt-20 text-center h-fit'
-        >
+        <div id='pokemon-details' className='basis-1/3 mt-20 text-center h-fit'>
           <PokemonDetails selected={select} />
         </div>
       </div>
@@ -151,9 +147,27 @@ export default function Pokedex() {
 }
 
 const Header = () => {
+  const [theme, setTheme] = useState('light');
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
+
+  useEffect(() => {
+    const appDoc: HTMLDivElement | null = document.querySelector(`[id^="app"]`);
+    if (appDoc) {
+      appDoc.setAttribute('data-theme', theme);
+    }
+  }, [theme]);
+
   return (
-    <div className='h-[30px] w-fit'>
-      <img className='w-full h-full' src={PokeballLogo} alt='logo' />
+    <div className='relative max-w-7xl mt-4 w-full flex justify-between'>
+      <div className='flex h-[30px] w-fit items-center gap-2'>
+        <img className='w-full h-full' src={PokeballLogo} alt='logo' />
+        <p className='pokemon-text'>PokéDex</p>
+      </div>
+      <button className='btn float-right' onClick={toggleTheme}>
+        Change
+      </button>
     </div>
   );
 };

@@ -1,9 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caprasimo&display=swap');
 
 * {
   font-family: 'Rubik', sans-serif;
 }
 
+.pokemon-text {
+  font-family: 'Caprasimo', cursive;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -30,4 +34,26 @@ li {
 
 label {
   @apply uppercase font-semibold;
+}
+
+[data-theme='light'] .card-container {
+  @apply bg-white hover:bg-slate-50;
+}
+[data-theme='light'] .pokemon-details-container {
+  @apply bg-white;
+}
+
+[data-theme='light'] .info-container {
+  @apply bg-slate-300;
+}
+
+[data-theme='dark'] .card-container {
+  @apply bg-slate-800 hover:bg-slate-700;
+}
+[data-theme='dark'] .pokemon-details-container {
+  @apply bg-slate-800;
+}
+
+[data-theme='dark'] .info-container {
+  @apply bg-slate-600;
 }

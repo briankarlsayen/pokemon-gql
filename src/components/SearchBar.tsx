@@ -45,7 +45,7 @@ export default function SearchBar({
       <input
         type='text'
         id='password'
-        className='w-full pl-3 pr-10 py-2 border-2 rounded-xl hover:border-gray-300 focus:outline-none focus:border-blue-500 transition-colors'
+        className='w-full pl-3 pr-10 py-2 border-2 rounded-xl hover:border-gray-300 focus:outline-none  transition-colors'
         placeholder='Search...'
         value={searchText}
         onChange={handleFilter}
@@ -58,13 +58,13 @@ export default function SearchBar({
       />
       {!!filteredOpts?.length && open && (
         <ul
-          className={`border border-gray-300 rounded-lg p-2 mt-2 absolute w-full z-10 bg-white`}
+          className={`rounded-lg p-2 mt-2 absolute w-full z-10 shadow-md pokemon-details-container`}
         >
           {filteredOpts.map((val) => {
             return (
               <li
                 key={val}
-                className=' m-0 p-2 cursor-pointer hover:bg-gray-200 z-10'
+                className=' m-0 p-2 cursor-pointer  z-10 card-container'
                 onMouseDown={() => handleSelect(val)}
               >
                 {val}

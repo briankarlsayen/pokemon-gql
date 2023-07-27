@@ -136,7 +136,7 @@ export default function PokemonDetails({ selected }: any) {
   console.log('selected', selected);
 
   return (
-    <div className='relative'>
+    <div className='relative pokemon-details-container p-4 rounded-md shadow-md'>
       <div>
         <div className='flex flex-col justify-center'>
           <div className='flex justify-center items-center max-w-[300px] max-h-[300px] w-full h-full self-center'>
@@ -246,7 +246,7 @@ export default function PokemonDetails({ selected }: any) {
 }
 const InfoCard = ({ title, content }: IInfoCard) => {
   return content ? (
-    <div className='bg-gray-300 rounded-lg'>
+    <div className='info-container rounded-lg'>
       <label>{title}</label>
       <p>{content}</p>
     </div>
