@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client';
 import { GET_POKEMON, GET_POKEMON_BY_NUM } from '../api/query';
 import Image from './Image';
 import Loading from './Loading';
+import StatsBar from './utils/StatsBar';
 
 interface IGender {
   female: string;
@@ -136,7 +137,7 @@ export default function PokemonDetails({ selected }: any) {
   console.log('selected', selected);
 
   return (
-    <div className='relative pokemon-details-container p-4 rounded-md shadow-md'>
+    <div className='relative pokemon-details-container p-4 rounded-md shadow-md h-auto'>
       <div>
         <div className='flex flex-col justify-center'>
           <div className='flex justify-center items-center max-w-[300px] max-h-[300px] w-full h-full self-center'>
@@ -194,48 +195,30 @@ export default function PokemonDetails({ selected }: any) {
         <div className='pt-4'>
           <label>Stats</label>
           <hr />
-          <ul className='grid grid-cols-2'>
+          <ul>
             <li>
-              <p>
-                Hp-
-                <span>{pokemon.baseStats.hp}</span>
-              </p>
+              <StatsBar title={'Hp'} value={pokemon.baseStats.hp} />
             </li>
             <li>
-              <p>
-                Atk-
-                <span>{pokemon.baseStats.attack}</span>
-              </p>
+              <StatsBar title={'Atk'} value={pokemon.baseStats.attack} />
             </li>
             <li>
-              <p>
-                Def-
-                <span>{pokemon.baseStats.defense}</span>
-              </p>
+              <StatsBar title={'Def'} value={pokemon.baseStats.defense} />
             </li>
             <li>
-              <p>
-                SpA-
-                <span>{pokemon.baseStats.specialattack}</span>
-              </p>
+              <StatsBar title={'SpA'} value={pokemon.baseStats.specialattack} />
             </li>
             <li>
-              <p>
-                SpD-
-                <span>{pokemon.baseStats.specialdefense}</span>
-              </p>
+              <StatsBar
+                title={'SpD'}
+                value={pokemon.baseStats.specialdefense}
+              />
             </li>
             <li>
-              <p>
-                SPD-
-                <span>{pokemon.baseStats.speed}</span>
-              </p>
+              <StatsBar title={'SPD'} value={pokemon.baseStats.speed} />
             </li>
             <li>
-              <p>
-                Tot-
-                <span>{pokemon.baseStatsTotal}</span>
-              </p>
+              <StatsBar title={'Tot'} value={pokemon.baseStatsTotal} />
             </li>
           </ul>
         </div>

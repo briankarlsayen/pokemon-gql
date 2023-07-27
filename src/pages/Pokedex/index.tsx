@@ -5,7 +5,7 @@ import PokemonCard from '../../components/PokemonCard';
 import { GET_ALL_POKEMONS } from '../../api/query';
 import PokemonDetails from '../../components/PokemonDetails';
 import Loading from '../../components/Loading';
-import { FaCaretRight, FaCaretLeft } from 'react-icons/fa';
+import { FaCaretRight, FaCaretLeft, FaSun, FaMoon } from 'react-icons/fa';
 import Select from '../../components/Select';
 import PokeballLogo from '../../assets/pokeball-v1.png';
 const DEFAULT_OFFSET = 89;
@@ -18,19 +18,34 @@ export default function Pokedex() {
   const [page, setPage] = useState(DEFAULT_PAGE);
   const [offset, setOffset] = useState(DEFAULT_OFFSET);
   const [order, setOrder] = useState('ascending');
+  const [fetching, setFetching] = useState(false);
+  const [isNext, setIsNext] = useState(true);
 
-  const { loading, error, data, refetch } = useQuery(GET_ALL_POKEMONS, {
-    variables: {
-      num: offset ?? DEFAULT_OFFSET,
-      reverse: order === 'ascending' ? false : true,
-    },
-  });
+  const { loading, error, data, refetch, networkStatus } = useQuery(
+    GET_ALL_POKEMONS,
+    {
+      variables: {
+        num: offset ?? DEFAULT_OFFSET,
+        reverse: order === 'ascending' ? false : true,
+      },
+    }
+  );
+
+  const refetchCallback = () => {
+    setFetching(true);
+  };
+
+  useEffect(() => {
+    if (loading === false) {
+      setFetching(false);
+    }
+    console.log('setting');
+  }, [data]);
 
   const pokemons = data?.getAllPokemon;
   const handleClick = (e: string) => {
     const lowerCased = e.toLowerCase();
     setSelected(lowerCased);
-    console.log('e', lowerCased);
   };
 
   const handleGetPokemonsByNum = (e: any) => {
@@ -42,11 +57,15 @@ export default function Pokedex() {
   const handleNext = () => {
     refetch({ num: offset + (page + 1) * ITEM_PER_PAGE });
     setPage((prevCount) => prevCount + 1);
+    refetchCallback();
+    setIsNext(true);
   };
   const handleBack = () => {
     if (page > 0) {
       refetch({ num: offset + (page - 1) * ITEM_PER_PAGE });
       setPage((prevCount) => prevCount - 1);
+      refetchCallback();
+      setIsNext(false);
     }
   };
 
@@ -68,9 +87,9 @@ export default function Pokedex() {
   ];
 
   return (
-    <div className='flex gap-4 min-h-screen h-full justify-center flex-col items-center'>
+    <div className='flex gap-4 min-h-screen h-full justify-center flex-col items-center px-4'>
       <Header />
-      <div className='flex w-full gap-4 max-w-7xl'>
+      <div className='flex md:flex-row flex-col-reverse w-full gap-4 max-w-7xl'>
         <div id='pokemon-list' className='basis-2/3 flex flex-col'>
           <div className='flex justify-center w-full pt-12'>
             <SearchBar
@@ -105,10 +124,15 @@ export default function Pokedex() {
             className='flex w-full justify-between pt-4'
           >
             <button
-              className='btn flex items-center p-2 rounded-md '
+              className='btn flex items-center p-2 rounded-md'
               onClick={handleBack}
+              disabled={!page}
             >
-              <FaCaretLeft />
+              {fetching && !isNext ? (
+                <span className='loading loading-spinner'></span>
+              ) : (
+                <FaCaretLeft />
+              )}
               Back
             </button>
             <button
@@ -116,11 +140,15 @@ export default function Pokedex() {
               onClick={handleNext}
             >
               Next
-              <FaCaretRight />
+              {fetching && isNext ? (
+                <span className='loading loading-spinner'></span>
+              ) : (
+                <FaCaretRight />
+              )}
             </button>
           </div>
-          <div className='grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 pt-12 gap-4 relative items-center flex-1 min-h-[35rem]'>
-            {pokemons ? (
+          <div className='grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 pt-4 gap-4 relative items-center flex-1 min-h-[35rem]'>
+            {!loading && pokemons ? (
               pokemons.map((pokemon: any) => (
                 <PokemonCard
                   key={pokemon.key}
@@ -138,7 +166,10 @@ export default function Pokedex() {
             )}
           </div>
         </div>
-        <div id='pokemon-details' className='basis-1/3 mt-20 text-center h-fit'>
+        <div
+          id='pokemon-details'
+          className='basis-1/3 flex text-center min-h-[860px] h-full'
+        >
           <PokemonDetails selected={select} />
         </div>
       </div>
@@ -165,8 +196,11 @@ const Header = () => {
         <img className='w-full h-full' src={PokeballLogo} alt='logo' />
         <p className='pokemon-text'>PokéDex</p>
       </div>
-      <button className='btn float-right' onClick={toggleTheme}>
-        Change
+      <button
+        onClick={toggleTheme}
+        className='btn border-2 border-gray-300 float-right'
+      >
+        {theme === 'light' ? <FaSun /> : <FaMoon />}
       </button>
     </div>
   );
