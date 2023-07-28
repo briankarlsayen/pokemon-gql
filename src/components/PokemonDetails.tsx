@@ -5,14 +5,11 @@ import { GET_POKEMON, GET_POKEMON_BY_NUM } from '../api/query';
 import Image from './Image';
 import Loading from './Loading';
 import StatsBar from './utils/StatsBar';
+import { ITypes } from './types';
 
 interface IGender {
   female: string;
   male: string;
-}
-
-interface IType {
-  name: string;
 }
 
 interface IAbility {
@@ -41,11 +38,11 @@ interface IBaseStats {
   speed: number;
 }
 
-interface IPokemon {
+export interface IPokemon {
   gender: IGender;
   height: number;
   sprite: string;
-  types: IType[];
+  types: ITypes[];
   num: number;
   key: string;
   weight: number;

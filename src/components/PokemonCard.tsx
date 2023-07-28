@@ -1,11 +1,8 @@
 import TypeBadge from './TypeBadge';
 import Image from './Image';
-interface ITypes {
-  __typename: 'string';
-  name: 'string';
-}
+import { ITypes } from './types';
 
-interface IPokemonCard {
+export interface IPokemonCard {
   name: string;
   num: number;
   types: ITypes[];

@@ -3,12 +3,11 @@ import SearchBar from '../../components/SearchBar';
 import { useQuery } from '@apollo/client';
 import PokemonCard from '../../components/PokemonCard';
 import { GET_ALL_POKEMONS } from '../../api/query';
-import PokemonDetails from '../../components/PokemonDetails';
+import PokemonDetails, { IPokemon } from '../../components/PokemonDetails';
 import Loading from '../../components/Loading';
 import { FaCaretRight, FaCaretLeft, FaSun, FaMoon } from 'react-icons/fa';
-import Select from '../../components/Select';
 import PokeballLogo from '../../assets/pokeball-v1.png';
-import CustomSelect from '../../components/CustomSelect';
+import Select from '../../components/Select';
 const DEFAULT_OFFSET = 89;
 const DEFAULT_PAGE = 0;
 const ITEM_PER_PAGE = 8;
@@ -61,7 +60,8 @@ export default function Pokedex() {
     }
   };
 
-  const handleChangeOrder = (e: any) => {
+  const handleChangeOrder = (e: string) => {
+    console.log('e', e);
     const newOffset = e === 'ascending' ? 89 : 0;
     setOffset(newOffset);
     setOrder(e);
@@ -95,8 +95,7 @@ export default function Pokedex() {
             />
           </div>
           <div className='pt-4'>
-            <CustomSelect options={options} />
-            {/* <Select onChange={handleChangeOrder} options={options} /> */}
+            <Select options={options} onChange={handleChangeOrder} />
           </div>
           <div
             id='pokemon-list-pagination'
@@ -128,7 +127,7 @@ export default function Pokedex() {
           </div>
           <div className='grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 pt-4 gap-4 relative items-center flex-1 min-h-[35rem]'>
             {!loading && pokemons ? (
-              pokemons.map((pokemon: any) => (
+              pokemons.map((pokemon: IPokemon) => (
                 <PokemonCard
                   key={pokemon.key}
                   name={pokemon.key}

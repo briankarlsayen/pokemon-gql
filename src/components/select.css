@@ -1,0 +1,30 @@
+.custom-select {
+  @apply relative inline-block w-48 rounded-md cursor-pointer;
+}
+
+.selected-option {
+  @apply flex items-center justify-between p-4;
+}
+
+.arrow {
+  @apply w-0 h-0 border-t-4 border-x-4 border-b-0  border-x-transparent border-b-transparent transition-all ease-linear;
+}
+
+.arrow.open {
+  @apply rotate-180;
+}
+
+.options {
+  @apply absolute top-full left-0 w-full max-h-[160px] overflow-y-auto shadow-md rounded-md z-20 p-2;
+}
+
+.option {
+  @apply p-2;
+}
+
+[data-theme='dark'] .arrow-color {
+  @apply border-t-slate-400;
+}
+[data-theme='light'] .arrow-color {
+  @apply border-t-black;
+}
