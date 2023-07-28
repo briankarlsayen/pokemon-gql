@@ -19,7 +19,7 @@ export default function PokemonCard({
 }: IPokemonCard) {
   return (
     <div
-      className='rounded-lg max-w-[300px] w-full p-4 shadow-lg h-[300px] flex flex-col  cursor-pointer card-container'
+      className='rounded-lg sm:max-w-[300px] max-w-full w-full p-4 shadow-lg h-[300px] flex flex-col cursor-pointer card-container'
       onClick={() => onClick(name)}
     >
       <div className='flex h-full w-full flex-1 items-center justify-center'>

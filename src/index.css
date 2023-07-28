@@ -30,7 +30,7 @@ h4 {
 }
 
 li {
-  @apply md:text-base text-sm pt-4 flex justify-between;
+  @apply md:text-base text-sm flex justify-between pt-2;
 }
 
 label {

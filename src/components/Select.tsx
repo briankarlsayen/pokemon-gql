@@ -8,13 +8,14 @@ interface IOption {
 interface ICustomSelect {
   options: IOption[];
   onChange: (e: string) => void;
+  defaultVal?: IOption;
 }
 
-const Select = ({ options, onChange }: ICustomSelect) => {
+const Select = ({ options, onChange, defaultVal }: ICustomSelect) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<IOption>({
-    name: '',
-    value: '',
+    name: defaultVal?.name ?? '',
+    value: defaultVal?.value ?? '',
   });
 
   const handleOptionClick = (option: IOption) => {

@@ -1,32 +1,34 @@
 import { useState, useEffect } from 'react';
 import SearchBar from '../../components/SearchBar';
-import { useQuery } from '@apollo/client';
 import PokemonCard from '../../components/PokemonCard';
-import { GET_ALL_POKEMONS } from '../../api/query';
 import PokemonDetails, { IPokemon } from '../../components/PokemonDetails';
 import Loading from '../../components/Loading';
 import { FaCaretRight, FaCaretLeft, FaSun, FaMoon } from 'react-icons/fa';
 import PokeballLogo from '../../assets/pokeball-v1.png';
 import Select from '../../components/Select';
+import { getAllPokemonPokemons, getSinglePokemon } from '../../api';
 const DEFAULT_OFFSET = 89;
 const DEFAULT_PAGE = 0;
 const ITEM_PER_PAGE = 8;
 
 export default function Pokedex() {
   const [keyword, setKeyword] = useState();
-  const [select, setSelected] = useState('');
+  const [select, setSelected] = useState('bulbasaur');
   const [page, setPage] = useState(DEFAULT_PAGE);
   const [offset, setOffset] = useState(DEFAULT_OFFSET);
   const [order, setOrder] = useState('ascending');
   const [fetching, setFetching] = useState(false);
   const [isNext, setIsNext] = useState(true);
 
-  const { loading, data, refetch } = useQuery(GET_ALL_POKEMONS, {
-    variables: {
-      num: offset ?? DEFAULT_OFFSET,
-      reverse: order === 'ascending' ? false : true,
-    },
+  const { loading, data, refetch } = getAllPokemonPokemons({
+    num: offset,
+    reverse: order,
   });
+  const pokemon = getSinglePokemon(select);
+
+  const fetchPokemon = (e: string) => {
+    pokemon.refetch({ pokemon: e });
+  };
 
   const refetchCallback = () => {
     setFetching(true);
@@ -35,14 +37,19 @@ export default function Pokedex() {
   useEffect(() => {
     if (loading === false) {
       setFetching(false);
+      if (firstLoad) {
+        setTimeout(() => {
+          setFirstLoad(false);
+        }, 3000);
+      }
     }
-    console.log('setting');
   }, [data]);
 
   const pokemons = data?.getAllPokemon;
   const handleClick = (e: string) => {
     const lowerCased = e.toLowerCase();
     setSelected(lowerCased);
+    fetchPokemon(lowerCased);
   };
 
   const handleNext = () => {
@@ -65,6 +72,7 @@ export default function Pokedex() {
     const newOffset = e === 'ascending' ? 89 : 0;
     setOffset(newOffset);
     setOrder(e);
+    setPage(0);
   };
 
   const options = [
@@ -77,13 +85,16 @@ export default function Pokedex() {
       value: 'descending',
     },
   ];
+  const [firstLoad, setFirstLoad] = useState(true);
 
-  return (
-    <div className='flex gap-4 min-h-screen h-full justify-center flex-col items-center px-4'>
+  return firstLoad ? (
+    <Loading loading={true} screen={true} />
+  ) : (
+    <div className='flex gap-4 min-h-screen h-full flex-col items-center px-4'>
       <Header />
-      <div className='flex md:flex-row flex-col-reverse w-full gap-4 max-w-7xl'>
+      <div className='flex md:flex-row flex-col-reverse w-full gap-4 max-w-7xl min-h-[90vh]'>
         <div id='pokemon-list' className='basis-2/3 flex flex-col'>
-          <div className='flex justify-center w-full pt-12'>
+          <div className='flex justify-center w-full'>
             <SearchBar
               value={keyword}
               onChange={(e: any) => {
@@ -95,7 +106,11 @@ export default function Pokedex() {
             />
           </div>
           <div className='pt-4'>
-            <Select options={options} onChange={handleChangeOrder} />
+            <Select
+              options={options}
+              onChange={handleChangeOrder}
+              defaultVal={options[0]}
+            />
           </div>
           <div
             id='pokemon-list-pagination'
@@ -125,7 +140,7 @@ export default function Pokedex() {
               )}
             </button>
           </div>
-          <div className='grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 pt-4 gap-4 relative items-center flex-1 min-h-[35rem]'>
+          <div className='grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 pt-4 gap-4 relative items-center flex-1 min-h-[35rem]'>
             {!loading && pokemons ? (
               pokemons.map((pokemon: IPokemon) => (
                 <PokemonCard
@@ -146,9 +161,9 @@ export default function Pokedex() {
         </div>
         <div
           id='pokemon-details'
-          className='basis-1/3 flex text-center min-h-[860px] h-full'
+          className='basis-1/3 flex text-center min-h-[810px] h-full relative'
         >
-          <PokemonDetails selected={select} />
+          <PokemonDetails data={pokemon} />
         </div>
       </div>
     </div>
@@ -169,8 +184,8 @@ const Header = () => {
   }, [theme]);
 
   return (
-    <div className='relative max-w-7xl mt-4 w-full flex justify-between'>
-      <div className='flex h-[30px] w-fit items-center gap-2'>
+    <div className='relative max-w-7xl mt-4 w-full flex justify-between items-center'>
+      <div className='flex h-[30px] w-fit items-center gap-2 '>
         <img className='w-full h-full' src={PokeballLogo} alt='logo' />
         <p className='pokemon-text'>PokéDex</p>
       </div>
